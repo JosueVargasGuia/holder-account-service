@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.nttdata.holder.account.service.FeignClient.AccountFeignClient;
 import com.nttdata.holder.account.service.FeignClient.CustomerFeignClient;
+import com.nttdata.holder.account.service.FeignClient.TableIdFeignClient;
 import com.nttdata.holder.account.service.entity.HolderAccount;
 import com.nttdata.holder.account.service.model.Account;
 import com.nttdata.holder.account.service.model.Customer;
@@ -39,7 +40,10 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	AccountFeignClient accountFeignClient;
 	
 	@Autowired
-	RestTemplate restTemplate;
+	TableIdFeignClient tableIdFeignClient;
+	
+	//@Autowired
+	//RestTemplate restTemplate;
 
 	@Value("${api.account-service.uri}")
 	private String accountService;
@@ -70,6 +74,8 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		if (key >= 1) {
 			holderAccount.setIdHolderAccount(key);
 			// log.info("SAVE[product]:"+holderAccount.toString());
+		}else {
+			return Mono.error(new InterruptedException("Servicio no disponible:" + HolderAccount.class.getSimpleName()));
 		}
 		return repository.insert(holderAccount);
 	}
@@ -125,7 +131,13 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 				hashMap.put("Holder Account: ", "La cuenta ingresada no le pertenece.");
 			}
 		} else {
-			hashMap.put("Error message: ", "Cliente o cuenta no encontrados.");
+			if (customer == null ) {
+				hashMap.put("Error message customer: ", "Cliente no encontrados.");
+			}
+			if ( account == null) {
+				hashMap.put("Error message account: ", "Cuenta no encontrados.");
+			}
+			
 		}
 
 		return Mono.just(hashMap);
@@ -150,7 +162,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	@Override
 	public Long generateKey(String nameTable) {
 //		/log.info(tableIdService + "/generateKey/" + nameTable);
-		ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable,
+		/*ResponseEntity<Long> responseGet = restTemplate.exchange(tableIdService + "/generateKey/" + nameTable,
 				HttpMethod.GET, null, new ParameterizedTypeReference<Long>() {
 				});
 		if (responseGet.getStatusCode() == HttpStatus.OK) {
@@ -158,6 +170,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 			return responseGet.getBody();
 		} else {
 			return Long.valueOf(0);
-		}
+		}*/
+		return tableIdFeignClient.generateKey(nameTable);
 	}
 }
