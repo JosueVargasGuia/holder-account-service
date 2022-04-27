@@ -1,5 +1,6 @@
 package com.nttdata.holder.account.service.impl;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		Long key = generateKey(HolderAccount.class.getSimpleName());
 		if (key >= 1) {
 			holderAccount.setIdHolderAccount(key);
+			holderAccount.setCreationDate(Calendar.getInstance().getTime());
 			// log.info("SAVE[product]:"+holderAccount.toString());
 		}else {
 			return Mono.error(new InterruptedException("Servicio no disponible:" + HolderAccount.class.getSimpleName()));
@@ -83,6 +85,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	@Override
 	public Mono<HolderAccount> update(HolderAccount holderAccount) {
 		// metodo para actualizar el titular de la cuenta
+		holderAccount.setCreationDate(Calendar.getInstance().getTime());
 		return repository.save(holderAccount);
 	}
 
