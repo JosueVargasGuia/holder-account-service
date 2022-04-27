@@ -110,7 +110,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 		if (customer != null && account != null) {
 			if (account.getIdCustomer() == holderAccount.getIdCustomer()) {
 				return this.findAll()
-						.filter(obj -> (obj.getIdCustomer() == customer.getId()
+						.filter(obj -> (obj.getIdCustomer() == customer.getIdCustomer()
 								&& obj.getIdAccount() == account.getIdAccount()))
 						.collect(Collectors.counting()).map(value -> {
 							if (customer.getTypeCustomer() == TypeCustomer.company) {
