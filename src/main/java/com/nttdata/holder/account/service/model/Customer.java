@@ -1,31 +1,32 @@
 package com.nttdata.holder.account.service.model;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Customer {
 	
-	private Long id;
+	private Long idCustomer;
 	private String firstname;
 	private String lastname;
-	private String documentNumber;
-	private TypeDocument typeDocument;
-	private TypeCustomer typeCustomer;
 	private String emailAddress;
 	private String phoneNumber;
 	private String homeAddress;
-	
-	@Override
-	public String toString() {
-		return "Customer [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", documentNumber="
-				+ documentNumber + ", typeDocument=" + typeDocument + ", typeCustomer=" + typeCustomer
-				+ ", emailAddress=" + emailAddress + ", phoneNumber=" + phoneNumber + ", homeAddress=" + homeAddress
-				+ "]";
-	}
+	private TypeDocument typeDocument;
+	private String documentNumber;	
+	private TypeCustomer typeCustomer;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss") 
+	private Date creationDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss")
+	private Date dateModified;
 }
