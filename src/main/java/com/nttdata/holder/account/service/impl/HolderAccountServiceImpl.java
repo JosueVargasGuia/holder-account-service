@@ -4,20 +4,17 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.nttdata.holder.account.service.FeignClient.AccountFeignClient;
 import com.nttdata.holder.account.service.FeignClient.CustomerFeignClient;
 import com.nttdata.holder.account.service.FeignClient.TableIdFeignClient;
 import com.nttdata.holder.account.service.entity.HolderAccount;
 import com.nttdata.holder.account.service.model.Account;
+import com.nttdata.holder.account.service.model.BankAccounts;
 import com.nttdata.holder.account.service.model.Customer;
 import com.nttdata.holder.account.service.model.TypeCustomer;
 import com.nttdata.holder.account.service.repository.HolderAccountRepository;
@@ -85,7 +82,7 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	@Override
 	public Mono<HolderAccount> update(HolderAccount holderAccount) {
 		// metodo para actualizar el titular de la cuenta
-		holderAccount.setCreationDate(Calendar.getInstance().getTime());
+		holderAccount.setDateModified(Calendar.getInstance().getTime());
 		return repository.save(holderAccount);
 	}
 
@@ -155,9 +152,9 @@ public class HolderAccountServiceImpl implements HolderAccountService {
 	}
 
 	@Override
-	public Account findAccount(Long id) {
+	public BankAccounts findAccount(Long id) {
 		// metodo que busca por id la cuenta asociada
-		Account account = accountFeignClient.accountFindById(id);
+		BankAccounts account = accountFeignClient.accountFindById(id);
 		log.info("Account encontrado -> " + account);	
 		return account;
 	}

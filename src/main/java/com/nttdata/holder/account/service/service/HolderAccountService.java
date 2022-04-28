@@ -3,6 +3,7 @@ package com.nttdata.holder.account.service.service;
 import java.util.Map;
 import com.nttdata.holder.account.service.entity.HolderAccount;
 import com.nttdata.holder.account.service.model.Account;
+import com.nttdata.holder.account.service.model.BankAccounts;
 import com.nttdata.holder.account.service.model.Customer;
 
 import reactor.core.publisher.Flux;
@@ -24,7 +25,7 @@ public interface HolderAccountService {
 
 	Customer findCustomer(Long id);
 
-	Account findAccount(Long id);
+	BankAccounts findAccount(Long id);
 
 	Long generateKey(String nameTable);
 }
